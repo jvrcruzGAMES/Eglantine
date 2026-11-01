@@ -3,11 +3,13 @@
 
 #pragma once
 
+#include "core/core.h"
 #include "core/hle/service/audio/audio_in_manager.h"
 #include "core/hle/service/audio/audio_out_manager.h"
 #include "core/hle/service/audio/audio_renderer_manager.h"
 #include "core/hle/service/ipc_helpers.h"
 #include "core/hle/service/service.h"
+#include "core/hle/service/sm/sm.h"
 
 namespace Service::Audio {
 
@@ -38,7 +40,9 @@ private:
                     arg);
         IPC::ResponseBuilder rb{ctx, 2, 0, 1};
         rb.Push(ResultSuccess);
-        rb.PushIpcInterface<IAudioOutManager>(ctx, system);
+        // The audio worker registers one output manager; share it with audout:u.
+        rb.PushIpcInterface(
+            ctx, system.ServiceManager().GetService<IAudioOutManager>("audout:u", true));
     }
 
     void GetAudioRendererManager(HLERequestContext& ctx) {
