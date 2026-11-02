@@ -274,7 +274,7 @@ ResultStatus AppLoader_NUP::VerifyIntegrity(
 ResultStatus AppLoader_NUP::ReadRomFS(FileSys::VirtualFile& out_file) {
     FileSys::VirtualDir base_romfs;
     if (base_nup && base_nup_index) {
-        base_romfs = (*base_nup)->GetRomFSDir(*base_nup_index);
+        base_romfs = base_nup->GetRomFSDir(*base_nup_index);
     } else {
         const auto base_index = nup->FindBasePackage();
         base_romfs = base_index ? nup->GetRomFSDir(*base_index) : FileSys::VirtualDir{};
